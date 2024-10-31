@@ -12,16 +12,30 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jzhu1224.mytube"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jzhu1224.mytube"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cae70025-49de-4bba-918f-06683b32e759"
+      }
+    },
+    "owner": "jzhu1224",
+    "plugins": [
+      "expo-router",
+      "expo-video",
+      "react-native-video"
+    ],
+    "scheme": "my-tube"
   }
 }
