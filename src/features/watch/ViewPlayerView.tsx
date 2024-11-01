@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Video, VideoRef } from "react-native-video";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { useVideoPlayerViewModel } from "./videoPlayerModel";
+import { useVideoPlayerViewModel } from "./videoPlayerViewModel";
 import { formatNumber } from "@/utils/formatNumber";
 import dayjs from "dayjs";
 
