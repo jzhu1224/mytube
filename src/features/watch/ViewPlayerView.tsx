@@ -10,7 +10,7 @@ import {
 import { Video, VideoRef } from "react-native-video";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { useVideoPlayerViewModel } from "./videoPlayerViewModel";
-import { formatNumber } from "@/utils/formatNumber";
+import { formatNumber } from "@/utils/formatUtils";
 import dayjs from "dayjs";
 
 const VideoPlayerView: React.FC = () => {
@@ -57,7 +57,7 @@ const VideoPlayerView: React.FC = () => {
         <Text style={styles.title}>{title}</Text>
         <View style={styles.statsContainer}>
           <Text style={styles.stats}>
-            {metadata.views} views |{" "}
+            {formatNumber(metadata.views)} views |{" "}
             {dayjs(metadata.uploadDate).format("DD MMM YYYY")}
           </Text>
           <View style={styles.reactionsContainer}>

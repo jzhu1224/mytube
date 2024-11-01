@@ -3,6 +3,7 @@ import React from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import VideoCard from "@/common/VideoCard";
 import { useGetTrendingQuery } from "../../api";
+import { formatNumber, secondsToHMS, timeAgo } from "@/utils/formatUtils";
 
 const TrendingView: React.FC = () => {
   const { data, error, isLoading } = useGetTrendingQuery("NZ");
@@ -17,13 +18,13 @@ const TrendingView: React.FC = () => {
       renderItem={({ item }) => (
         <VideoCard
           thumbnail={item.thumbnail}
-          duration="4:22" // Assuming you've formatted item.duration
+          duration={secondsToHMS(item.duration)} // Assuming you've formatted item.duration
           title={item.title}
           uploaderAvatar={item.uploaderAvatar}
           uploaderName={item.uploaderName}
           uploaderVerified={item.uploaderVerified}
-          views="4.2M" // Format item.views as needed
-          uploadDate="1 day ago" // Format item.uploadedDate as needed
+          views={formatNumber(item.views)} // Format item.views as needed
+          uploadDate={item.uploadedDate} // Format item.uploadedDate as needed
           videoId={item.url}
         />
       )}
