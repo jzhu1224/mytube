@@ -3,7 +3,7 @@ import React from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import VideoCard from "@/common/VideoCard";
 import { useGetTrendingQuery } from "../../api";
-import { formatNumber, secondsToHMS, timeAgo } from "@/utils/formatUtils";
+import { formatNumber, secondsToHMS } from "@/utils/formatUtils";
 
 const TrendingView: React.FC = () => {
   const { data, error, isLoading } = useGetTrendingQuery("NZ");

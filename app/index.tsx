@@ -9,6 +9,7 @@ export default function App() {
       <StatusBar style="auto" />
       <Link href="/counter"> go to counter</Link>
       <Link href="/trending"> go to trending</Link>
+      <Link href="/search"> go to search</Link>
     </View>
   );
 }

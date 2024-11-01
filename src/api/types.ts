@@ -70,6 +70,7 @@ export interface RelatedStream {
   uploaderVerified: boolean;
   url: string;
   views: number;
+  uploaderName: string;
 }
 
 export interface VideoStreamsResponse {
@@ -95,4 +96,49 @@ export interface VideoStreamsResponse {
   views: number;
   uploaderAvatar: string;
   uploaderSubscriberCount: string;
+}
+
+export interface SearchItem {
+  url: string;
+  type: "channel" | "stream";
+  name?: string;
+  title?: string;
+  thumbnail: string;
+  description?: string;
+  shortDescription?: string;
+  uploaderName?: string;
+  uploaderUrl?: string;
+  uploaderAvatar?: string;
+  uploadedDate?: string;
+  duration?: number;
+  views?: number;
+  subscribers?: number;
+  videos?: number;
+  verified?: boolean;
+  uploaderVerified?: boolean;
+  isShort?: boolean;
+}
+
+export interface SearchResponse {
+  items: SearchItem[];
+  nextpage?: string;
+  suggestion?: string;
+  corrected?: boolean;
+}
+
+export interface SuggestionsResponse extends Array<string | string[]> {
+  0: string; // The original query
+  1: string[]; // List of suggestions
+}
+
+export interface ChannelResponse {
+  avatarUrl: string;
+  bannerUrl: string;
+  description: string;
+  id: string;
+  name: string;
+  nextpage: string;
+  relatedStreams: RelatedStream[];
+  subscriberCount: number;
+  verified: boolean;
 }

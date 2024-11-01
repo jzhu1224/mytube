@@ -53,10 +53,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
         {/* Uploader information */}
         <View style={styles.uploaderContainer}>
-          <Image
-            source={{ uri: uploaderAvatar }}
-            style={styles.uploaderAvatar}
-          />
+          {uploaderAvatar && (
+            <Image
+              source={{ uri: uploaderAvatar }}
+              style={styles.uploaderAvatar}
+            />
+          )}
           <Text style={styles.uploaderName}>
             {uploaderName}{" "}
             {uploaderVerified && (
