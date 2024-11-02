@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./features/counter/counterSlice";
-import api from "./api";
+import counterReducer from "../features/counter/counterSlice";
+import searchReducer from "./searchSlice";
+
+import api from "../api";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     [api.reducerPath]: api.reducer,
+    search: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

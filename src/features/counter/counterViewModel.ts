@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "./counterSlice";
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 
 export const useCounterViewModel = () => {
   const dispatch = useDispatch();

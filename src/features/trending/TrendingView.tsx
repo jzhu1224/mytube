@@ -1,4 +1,3 @@
-// TrendingView.tsx
 import React from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import VideoCard from "@/common/VideoCard";

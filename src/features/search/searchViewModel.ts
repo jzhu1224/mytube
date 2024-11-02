@@ -1,29 +1,28 @@
-import { useState } from "react";
-import { useSearchQuery, useSuggestionsQuery } from "../../api";
-import { SearchItem } from "../../api/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { addHistoryItem, deleteHistoryItem } from "../../store/searchSlice";
+import { useSuggestionsQuery } from "../../api";
 
-interface SearchViewModel {
-  query: string;
-  setQuery: (query: string) => void;
-  results: SearchItem[] | undefined;
-  suggestions: string[] | undefined;
-  isLoading: boolean;
-  error: boolean;
-}
+export const useSearchViewModel = (keyword: string) => {
+  const dispatch = useDispatch();
+  const searchHistory = useSelector((state: RootState) => state.search.history);
 
-export const useSearchViewModel = (): SearchViewModel => {
-  const [query, setQuery] = useState("");
-  const { data, error, isLoading } = useSearchQuery(query);
-  const { data: suggestionsData } = useSuggestionsQuery(query, {
-    skip: query.length < 2,
+  const { data: suggestions } = useSuggestionsQuery(keyword, {
+    skip: keyword?.length < 1,
   });
 
+  const handleSearch = (term: string) => {
+    dispatch(addHistoryItem(term)); // Add term to Redux history
+  };
+
+  const handleDeleteHistoryItem = (item: string) => {
+    dispatch(deleteHistoryItem(item)); // Remove term from Redux history
+  };
+
   return {
-    query,
-    setQuery,
-    results: data?.items,
-    suggestions: suggestionsData ? suggestionsData[1] : [],
-    isLoading,
-    error: !!error,
+    searchHistory,
+    suggestions: suggestions ? suggestions[1] : [],
+    handleSearch,
+    handleDeleteHistoryItem,
   };
 };

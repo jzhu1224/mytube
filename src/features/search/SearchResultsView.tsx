@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -9,17 +9,18 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { useSearchViewModel } from "./searchViewModel";
+import { useSearchResultModel } from "./searchResultsModel";
 import VideoCard from "@/common/VideoCard";
 import { formatNumber, secondsToHMS } from "@/utils/formatUtils";
 import { useRouter } from "expo-router";
 
-const SearchResultsView: React.FC = () => {
-  const { query, setQuery, results, suggestions, isLoading, error } =
-    useSearchViewModel();
+const SearchResultsView = (props: {
+  keywords: string;
+  handleInputFocus: () => void;
+}) => {
+  const { keywords } = props;
+  const { results, isLoading, error } = useSearchResultModel(keywords);
 
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const inputRef = useRef<TextInput>(null);
   const router = useRouter();
 
   const renderItem = ({ item }: { item: any }) => {
@@ -28,7 +29,6 @@ const SearchResultsView: React.FC = () => {
         <Pressable
           style={styles.channelContainer}
           onPress={() => {
-            console.log("item", item);
             router.push({ pathname: item.url });
           }}
         >
@@ -60,55 +60,8 @@ const SearchResultsView: React.FC = () => {
     return null;
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
-    setShowSuggestions(false); // Hide suggestions after selection
-    inputRef.current?.blur(); // Dismiss keyboard
-  };
-
-  const renderSuggestion = ({ item }: { item: string }) => (
-    <Pressable
-      onPress={() => handleSuggestionClick(item)}
-      style={styles.suggestionItem}
-    >
-      <Text style={styles.suggestionText}>{item}</Text>
-    </Pressable>
-  );
-
-  const handleInputFocus = () => {
-    if (suggestions && suggestions.length > 0) {
-      setShowSuggestions(true);
-    }
-  };
-
-  const handleInputChange = (text: string) => {
-    setQuery(text);
-    setShowSuggestions(
-      !!(text.length > 0 && suggestions && suggestions.length > 0)
-    );
-  };
-
   return (
     <View style={styles.container}>
-      <TextInput
-        ref={inputRef}
-        style={styles.searchInput}
-        placeholder="Search..."
-        value={query}
-        onFocus={handleInputFocus}
-        onChangeText={handleInputChange}
-      />
-
-      {showSuggestions && suggestions && suggestions.length > 0 && (
-        <View style={styles.suggestionsPopover}>
-          <FlatList
-            data={suggestions}
-            keyExtractor={(item) => item}
-            renderItem={renderSuggestion}
-            style={styles.suggestionsList}
-          />
-        </View>
-      )}
       {isLoading && <ActivityIndicator size="large" color="#000" />}
       {error && <Text style={styles.errorText}>Error loading results</Text>}
       <FlatList

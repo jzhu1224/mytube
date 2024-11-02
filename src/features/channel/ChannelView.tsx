@@ -26,7 +26,6 @@ const ChannelScreen: React.FC = () => {
   if (error) {
     return <Text style={styles.errorText}>Error loading channel</Text>;
   }
-  console.log(channel?.relatedStreams);
 
   return (
     <View style={styles.container}>
