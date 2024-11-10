@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import SearchPopup from "./SearchPopup";
+import SearchPopup from "./SearchPopupView";
 import SearchResultsView from "./SearchResultsView";
 import { TextInput, View, StyleSheet } from "react-native";
+import useSearchViewViewModel from "./searchViewModel";
 
 const SearchView = () => {
-  const [showSearchPopup, setShowSearchPopup] = useState(true);
-  const [keywords, setKeywords] = useState<string>("");
+  const { keywords, setKeywords, showSearchPopup, setShowSearchPopup } =
+    useSearchViewViewModel();
 
   return (
     <View style={{ flex: 1 }}>

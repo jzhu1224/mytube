@@ -27,7 +27,7 @@ const VideoPlayerView: React.FC = () => {
 
   if (isLoading) {
     return (
-      <ActivityIndicator style={styles.loader} size="large" color="#fff" />
+      <ActivityIndicator style={styles.loader} size="large" color="#000" />
     );
   }
 

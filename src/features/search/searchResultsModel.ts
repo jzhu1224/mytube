@@ -1,11 +1,13 @@
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useSearchQuery } from "../../api";
-import { SearchItem } from "../../api/types";
+import { SearchResponse } from "../../api/types";
+import { SerializedError } from "@reduxjs/toolkit";
 
 interface SearchViewModel {
   keywords: string;
-  results: SearchItem[] | undefined;
+  data: SearchResponse | undefined;
   isLoading: boolean;
-  error: boolean;
+  error: FetchBaseQueryError | SerializedError | undefined;
 }
 
 export const useSearchResultModel = (keywords: string): SearchViewModel => {
@@ -13,8 +15,8 @@ export const useSearchResultModel = (keywords: string): SearchViewModel => {
 
   return {
     keywords,
-    results: data?.items,
+    data,
     isLoading,
-    error: !!error,
+    error,
   };
 };

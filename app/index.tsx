@@ -7,7 +7,6 @@ export default function App() {
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
-      <Link href="/counter"> go to counter</Link>
       <Link href="/trending"> go to trending</Link>
       <Link href="/search"> go to search</Link>
     </View>

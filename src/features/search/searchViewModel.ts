@@ -1,28 +1,22 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { addHistoryItem, deleteHistoryItem } from "../../store/searchSlice";
-import { useSuggestionsQuery } from "../../api";
+import { useState } from "react";
 
-export const useSearchViewModel = (keyword: string) => {
-  const dispatch = useDispatch();
-  const searchHistory = useSelector((state: RootState) => state.search.history);
+interface SearchViewViewModelProps {
+  keywords: string;
+  setKeywords: (value: string) => void;
+  showSearchPopup: boolean;
+  setShowSearchPopup: (value: boolean) => void;
+}
 
-  const { data: suggestions } = useSuggestionsQuery(keyword, {
-    skip: keyword?.length < 1,
-  });
-
-  const handleSearch = (term: string) => {
-    dispatch(addHistoryItem(term)); // Add term to Redux history
-  };
-
-  const handleDeleteHistoryItem = (item: string) => {
-    dispatch(deleteHistoryItem(item)); // Remove term from Redux history
-  };
+const useSearchViewViewModel = (): SearchViewViewModelProps => {
+  const [showSearchPopup, setShowSearchPopup] = useState(true);
+  const [keywords, setKeywords] = useState<string>("");
 
   return {
-    searchHistory,
-    suggestions: suggestions ? suggestions[1] : [],
-    handleSearch,
-    handleDeleteHistoryItem,
+    keywords,
+    setKeywords,
+    showSearchPopup,
+    setShowSearchPopup,
   };
 };
+
+export default useSearchViewViewModel;

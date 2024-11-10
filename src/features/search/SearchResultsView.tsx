@@ -9,17 +9,17 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { useSearchResultModel } from "./searchResultsModel";
 import VideoCard from "@/common/VideoCard";
 import { formatNumber, secondsToHMS } from "@/utils/formatUtils";
 import { useRouter } from "expo-router";
+import { useSearchResultViewModel } from "./searchResultsViewModel";
 
 const SearchResultsView = (props: {
   keywords: string;
   handleInputFocus: () => void;
 }) => {
   const { keywords } = props;
-  const { results, isLoading, error } = useSearchResultModel(keywords);
+  const { results, isLoading, error } = useSearchResultViewModel(keywords);
 
   const router = useRouter();
 

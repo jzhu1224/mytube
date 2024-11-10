@@ -11,7 +11,7 @@ import {
   GestureHandlerRootView,
   Swipeable,
 } from "react-native-gesture-handler";
-import { useSearchViewModel } from "./searchViewModel";
+import { useSearchPopupViewModel } from "./searchPopupViewModel";
 
 const SearchPopup = (props: {
   onHandleSearchCallback: (keywords: string) => void;
@@ -20,7 +20,7 @@ const SearchPopup = (props: {
   const { keyword } = props;
 
   const { searchHistory, suggestions, handleSearch, handleDeleteHistoryItem } =
-    useSearchViewModel(keyword);
+    useSearchPopupViewModel(keyword);
 
   const handleSearchCallback = (query: string) => {
     handleSearch(query);

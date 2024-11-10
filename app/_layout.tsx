@@ -8,6 +8,7 @@ export default function Layout() {
       <Stack>
         <Stack.Screen name="search" options={{ headerShown: false }} />
         <Stack.Screen name="watch/[id]" options={{ title: "" }} />
+        <Stack.Screen name="channel/[id]" options={{ title: "" }} />
       </Stack>
     </Provider>
   );
