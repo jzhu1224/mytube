@@ -3,39 +3,93 @@
 # Add steps that test, sign, and distribute the APK, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/android
 
+# Trigger for main branch and pull requests
 trigger:
 - main
 
+pr:
+  branches:
+    include:
+      - main  # Trigger tests for PRs targeting the main branch
+
+# Use Azure's hosted Ubuntu environment for builds and tests
 pool:
   vmImage: 'ubuntu-latest'
 
-name: $(date:yyyy).$(Month)$(rev:.r)
+# Define jobs
+jobs:
+- job: UnitTests
+  displayName: "Run Unit Tests for Pull Requests"
+  condition: eq(variables['Build.Reason'], 'PullRequest')  # Run only for PRs
 
-steps:
+  steps:
+    # Step 1: Checkout the source code
+    - task: Checkout@1
+      displayName: "Checkout Code"
 
-- script: yarn install
+    # Step 2: Set up Node.js environment
+    - task: NodeTool@0
+      inputs:
+        versionSpec: "16.x"  # Use the desired Node.js version
+        checkLatest: true
+      displayName: "Set Up Node.js"
 
-- task: Gradle@2
-  inputs:
-    gradleWrapperFile: 'android/gradlew'
-    workingDirectory: 'android/'
-    options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
-    tasks: 'assembleRelease'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    gradleOptions: '-Xmx3072m'
+    # Step 3: Install dependencies
+    - script: |
+        yarn install
+      displayName: "Install Dependencies"
 
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'my-upload-key.keystore'
-    apksignerKeystorePassword: '$(KeyStorePassword)'
-    apksignerKeystoreAlias: '$(KeyAlias)'
-    apksignerKeyPassword: '$(KeyPassword)'
-    zipalign: false
+    # Step 4: Run unit tests
+    - script: |
+        yarn test
+      displayName: "Run Unit Tests"
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'android/app/build/outputs/apk/release'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    # Step 5: Publish test results
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-results.xml'  # Replace with your test result path
+        failTaskOnFailedTests: true
+      displayName: "Publish Test Results"
+
+- job: BuildAndroid
+  displayName: "Build Android App for Main Branch"
+  condition: eq(variables['Build.SourceBranchName'], 'main')  # Run only for main branch
+
+  steps:
+    # Step 1: Install dependencies
+    - script: |
+        yarn install
+      displayName: "Install Dependencies"
+
+    # Step 2: Build Android app using Gradle
+    - task: Gradle@2
+      inputs:
+        gradleWrapperFile: 'android/gradlew'
+        workingDirectory: 'android/'
+        options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
+        tasks: 'assembleRelease'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        gradleOptions: '-Xmx3072m'
+      displayName: "Build Android APK"
+
+    # Step 3: Sign APK
+    - task: AndroidSigning@3
+      inputs:
+        apkFiles: '**/*.apk'
+        apksignerKeystoreFile: 'my-upload-key.keystore'
+        apksignerKeystorePassword: '$(KeyStorePassword)'
+        apksignerKeystoreAlias: '$(KeyAlias)'
+        apksignerKeyPassword: '$(KeyPassword)'
+        zipalign: false
+      displayName: "Sign APK"
+
+    # Step 4: Publish build artifacts
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'android/app/build/outputs/apk/release'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      displayName: "Publish APK Artifacts"
+
