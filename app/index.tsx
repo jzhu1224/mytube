@@ -7,8 +7,8 @@ export default function App() {
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
-      <Link href="/trending"> go to trending</Link>
-      <Link href="/search"> go to search</Link>
+      <Link href="/trending"> Go to trending</Link>
+      <Link href="/search"> Go to search</Link>
     </View>
   );
 }
