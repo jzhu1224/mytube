@@ -10,7 +10,7 @@ trigger:
 pr:
   branches:
     include:
-      - 'fix*'
+      - 'fix/*'
 
 # Use Azure's hosted Ubuntu environment for builds and tests
 pool:
