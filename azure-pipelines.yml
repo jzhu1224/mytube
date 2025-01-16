@@ -8,11 +8,6 @@ trigger:
 - main
 - 'fix/*'
 
-pr:
-  branches:
-    include:
-      - 'fix/*'
-
 # Use Azure's hosted Ubuntu environment for builds and tests
 pool:
   vmImage: 'ubuntu-latest'
@@ -24,6 +19,8 @@ jobs:
 
   steps:
     # Step 1: Checkout the source code
+    - checkout: self
+      displayName: "Checkout Code"
 
     # Step 2: Set up Node.js environment
     - task: NodeTool@0
