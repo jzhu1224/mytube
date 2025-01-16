@@ -10,7 +10,7 @@ trigger:
 pr:
   branches:
     include:
-      - main  # Trigger tests for PRs targeting the main branch
+      - 'fix*'
 
 # Use Azure's hosted Ubuntu environment for builds and tests
 pool:
@@ -20,7 +20,7 @@ pool:
 jobs:
 - job: UnitTests
   displayName: "Run Unit Tests for Pull Requests"
-  
+
   steps:
     # Step 1: Checkout the source code
     - task: Checkout@1
@@ -50,4 +50,3 @@ jobs:
         testResultsFiles: '**/test-results.xml'  # Replace with your test result path
         failTaskOnFailedTests: true
       displayName: "Publish Test Results"
-
