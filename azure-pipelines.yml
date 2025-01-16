@@ -1,53 +1,62 @@
-# Android
-# Build your Android project with Gradle.
-# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/android
+# # Android
+# # Build your Android project with Gradle.
+# # Add steps that test, sign, and distribute the APK, save build artifacts, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/android
 
-# Trigger for main branch and pull requests
+# # Trigger for main branch and pull requests
+# trigger:
+# - main
+# - 'fix/*'
+
+# # Use Azure's hosted Ubuntu environment for builds and tests
+# pool:
+#   vmImage: 'ubuntu-latest'
+
+# # Define jobs
+# jobs:
+# - job: UnitTests
+#   displayName: "Run Unit Tests for Pull Requests"
+
+#   steps:
+#     # Step 1: Checkout the source code
+#     - checkout: self
+#       displayName: "Checkout Code"
+
+#     # Step 2: Set up Node.js environment
+#     - task: NodeTool@0
+#       inputs:
+#         versionSpec: "16.x"  # Use the desired Node.js version
+#         checkLatest: true
+#       displayName: "Set Up Node.js"
+
+#     # Step 3: Install dependencies
+#     - script: |
+#         yarn install
+#       displayName: "Install Dependencies"
+
+#     # Step 4: Run unit tests
+#     - script: |
+#         yarn test
+#       displayName: "Run Unit Tests"
+
+#     # Step 5: Publish test results
+#     - task: PublishTestResults@2
+#       inputs:
+#         testResultsFormat: 'JUnit'
+#         testResultsFiles: '**/test-results.xml'  # Replace with your test result path
+#         failTaskOnFailedTests: true
+#       displayName: "Publish Test Results"
+
 trigger:
 - main
+- 'fix/*'
 
-pr:
-  branches:
-    include:
-      - main  # Trigger tests for PRs targeting the main branch
-
-# Use Azure's hosted Ubuntu environment for builds and tests
 pool:
   vmImage: 'ubuntu-latest'
 
-# Define jobs
-jobs:
-- job: UnitTests
-  displayName: "Run Unit Tests for Pull Requests"
-
-  steps:
-    # Step 1: Checkout the source code
-    - task: Checkout@1
-      displayName: "Checkout Code"
-
-    # Step 2: Set up Node.js environment
-    - task: NodeTool@0
-      inputs:
-        versionSpec: "16.x"  # Use the desired Node.js version
-        checkLatest: true
-      displayName: "Set Up Node.js"
-
-    # Step 3: Install dependencies
-    - script: |
-        yarn install
-      displayName: "Install Dependencies"
-
-    # Step 4: Run unit tests
-    - script: |
-        yarn test
-      displayName: "Run Unit Tests"
-
-    # Step 5: Publish test results
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/test-results.xml'  # Replace with your test result path
-        failTaskOnFailedTests: true
-      displayName: "Publish Test Results"
-
+steps:
+- script: |
+    echo "Debugging Pipeline"
+    env
+    ls -al
+  displayName: "Debug Pipeline"
