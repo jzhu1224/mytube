@@ -24,8 +24,6 @@ jobs:
 
   steps:
     # Step 1: Checkout the source code
-    - checkout: self
-      displayName: "Checkout Code"
 
     # Step 2: Set up Node.js environment
     - task: NodeTool@0
