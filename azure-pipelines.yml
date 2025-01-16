@@ -20,8 +20,7 @@ pool:
 jobs:
 - job: UnitTests
   displayName: "Run Unit Tests for Pull Requests"
-  condition: eq(variables['Build.Reason'], 'PullRequest')  # Run only for PRs
-
+  
   steps:
     # Step 1: Checkout the source code
     - task: Checkout@1
